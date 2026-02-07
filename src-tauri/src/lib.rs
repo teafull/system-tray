@@ -11,15 +11,28 @@ fn greet(name: &str) -> String {
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    // let quit_i = MenuItem::with_id("quit", "Quit", true, None::<&str>);
-    let menu = Menu::with_items(&[&quit_i]);
-
     tauri::Builder::default().setup(|app| {
+        let quit_i = MenuItem::with_id(app, "quit", "退出", true, None::<&str>)?;
+        let about_i = MenuItem::with_id(app, "about", "关于", true, None::<&str>)?;
+        let menu = Menu::with_items(app, &[&about_i, &  quit_i])?;
         let _ = TrayIconBuilder::new()
-        .icon(app.default_window_icon().unwrap().clone())
-        .menu(&menu)
-        .show_menu_on_left_click(true)
-        .build(app)?;
+            .icon(app.default_window_icon().unwrap().clone())
+            .menu(&menu)
+            .show_menu_on_left_click(false)
+            .on_menu_event(move |_app, event| match event.id.as_ref() {
+
+                "quit" => {
+                    std::process::exit(0);
+                }
+                "about" => {
+                    // TODO: Show about dialog
+                }
+                _ => {
+                    println!("Unknown menu item:");
+                }
+
+            })
+            .build(app)?;
         Ok(())
     })
         .plugin(tauri_plugin_opener::init())
