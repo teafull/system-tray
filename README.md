@@ -1,7 +1,83 @@
-# Tauri + Vue 3
+# System Tray - Tauri + Vue 3
 
-This template should help get you started developing with Tauri + Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+一个基于 Tauri 2 + Vue 3 的桌面应用程序，支持系统托盘功能。
 
-## Recommended IDE Setup
+## 功能特性
+
+- ✨ **系统托盘集成**: 应用程序最小化到系统托盘，后台运行
+- 🖱️ **托盘交互**:
+  - 左键单击: 显示并聚焦主窗口
+  - 右键单击: 显示菜单（关于、退出）
+- 🪟 **窗口管理**:
+  - 关闭窗口时自动隐藏到系统托盘（而非退出应用）
+  - 通过托盘图标重新显示窗口
+- 🎨 **现代 UI**: 基于 Vue 3 + Vite 构建的响应式界面
+- 🔧 **开发友好**: 支持热重载和快速开发
+
+## 技术栈
+
+- **前端框架**: Vue 3 (Composition API + `<script setup>`)
+- **构建工具**: Vite
+- **桌面框架**: Tauri 2 (Rust)
+- **UI 特性**: 支持暗色模式、响应式设计
+
+## 开发指南
+
+### 环境要求
+
+- Node.js 18+
+- Rust 1.70+
+- pnpm/npm/yarn
+
+### 安装依赖
+
+```bash
+npm install
+```
+
+### 开发模式
+
+```bash
+npm run tauri dev
+```
+
+### 构建应用
+
+```bash
+npm run tauri build
+```
+
+## 推荐的 IDE 设置
 
 - [VS Code](https://code.visualstudio.com/) + [Vue - Official](https://marketplace.visualstudio.com/items?itemName=Vue.volar) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+
+## 项目结构
+
+```
+system-tray/
+├── src/                    # 前端源码 (Vue 3)
+│   ├── App.vue            # 主应用组件
+│   ├── main.js            # Vue 应用入口
+│   └── assets/            # 静态资源
+├── src-tauri/             # Rust 后端代码
+│   ├── src/
+│   │   ├── main.rs        # Rust 入口
+│   │   └── lib.rs         # 核心逻辑（含托盘实现）
+│   ├── Cargo.toml         # Rust 依赖配置
+│   └── tauri.conf.json    # Tauri 配置
+├── dist/                  # 构建输出目录
+└── public/                # 公共静态资源
+```
+
+## 使用说明
+
+1. 启动应用后，主窗口会显示在屏幕上
+2. 点击窗口关闭按钮，窗口会隐藏到系统托盘
+3. 左键单击托盘图标，窗口会重新显示并获得焦点
+4. 右键单击托盘图标，显示菜单：
+   - 关于: 显示应用信息（待实现）
+   - 退出: 完全退出应用程序
+
+## 许可证
+
+MIT
