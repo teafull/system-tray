@@ -1,6 +1,7 @@
 use tauri::{
   menu::{Menu, MenuItem},
-  tray::TrayIconBuilder,
+  tray::{MouseButton, MouseButtonState, TrayIconBuilder},
+  Manager,
 };
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
@@ -31,6 +32,23 @@ pub fn run() {
                     println!("Unknown menu item:");
                 }
 
+            })
+            .on_tray_icon_event(|tray, event| {
+                if let tauri::tray::TrayIconEvent::Click {
+                    id: _,
+                    position: _,
+                    rect: _,
+                    button: MouseButton::Left,
+                    button_state: MouseButtonState::Up,
+                } = event {
+                    println!("left click pressed and released");
+                    // let's show and focus the main window when the tray is clicked
+                    if let Some(window) = tray.app_handle().get_webview_window("main") {
+                        let _ = window.unminimize();
+                        let _ = window.show();
+                        let _ = window.set_focus();
+                    }
+                }
             })
             .build(app)?;
         Ok(())
